@@ -3,16 +3,19 @@ import { githubIcon, googleIcon } from '../../utils/Icons'
 
 export default function Login() {
   return (
-    <div>
-      <ButtonStyledGoogle>
-        {googleIcon}
-        Iniciar Sesión con Google
-      </ButtonStyledGoogle>
-      <ButtonStyledGithub>
-        {githubIcon}
-        Iniciar Sesión con Github
-      </ButtonStyledGithub>
-    </div>
+    <LoginStyled>
+      <h1>Inicia Sesión</h1>
+      <div className="button-section">
+        <ButtonStyledGoogle>
+          {googleIcon}
+          Iniciar Sesión con Google
+        </ButtonStyledGoogle>
+        <ButtonStyledGithub>
+          {githubIcon}
+          Iniciar Sesión con Github
+        </ButtonStyledGithub>
+      </div>
+    </LoginStyled>
   )
 }
 
@@ -21,6 +24,7 @@ const ButtonStyledGoogle = styled.button`
   display: flex;
   justify-content: center;
   padding: 0.5rem 1.4rem;
+  margin-bottom: 3vw;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 700;
@@ -48,4 +52,19 @@ const ButtonStyledGoogle = styled.button`
 const ButtonStyledGithub = styled(ButtonStyledGoogle)`
   color: #ffffff;
   background-color: rgb(24, 23, 23);
+`
+
+const LoginStyled = styled.div`
+  h1 {
+    text-align: center;
+    margin-top: 5vw;
+  }
+
+  .button-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+  }
 `

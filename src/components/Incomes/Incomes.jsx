@@ -1,52 +1,63 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import { InnerLayout } from '../../styles/Layout'
 import { useGlobalContext } from '../../context/globalContext'
 import { useEffect } from 'react'
 import Item from '../Item/Item'
 import IncomeForm from '../Form/IncomeForm'
+import Login from '../Login/Login'
 
-export default function Incomes() {
+export default function Incomes({ session }) {
   const { incomes, getIncomes, deleteIncome, totalIncome } = useGlobalContext()
 
   useEffect(() => {
-    getIncomes()
-  }, [])
+    if (session !== null) getIncomes()
+  }, [session])
 
-  return (
-    <IncomesStyled>
-      <InnerLayout>
-        <h1>Ingresos</h1>
-        <h2 className="total-income">
-          Ingresos Totales: <span>${totalIncome()}</span>
-        </h2>
-        <div className="income-content">
-          <div className="form-container">
-            <IncomeForm />
-          </div>
-          <div className="incomes">
-            {incomes.map((income) => {
-              const { _id, title, amount, date, category, description } = income
+  if (session !== null) {
+    return (
+      <IncomesStyled>
+        <InnerLayout>
+          <h1>Ingresos</h1>
+          <h2 className="total-income">
+            Ingresos Totales: <span>${totalIncome()}</span>
+          </h2>
+          <div className="income-content">
+            <div className="form-container">
+              <IncomeForm />
+            </div>
+            <div className="incomes">
+              {incomes.map((income) => {
+                const { _id, title, amount, date, category, description } =
+                  income
 
-              return (
-                <Item
-                  key={_id}
-                  id={_id}
-                  title={title}
-                  amount={amount}
-                  date={date}
-                  category={category}
-                  description={description}
-                  indicatorColor="var(--color-green)"
-                  deleteItem={deleteIncome}
-                />
-              )
-            })}
+                return (
+                  <Item
+                    key={_id}
+                    id={_id}
+                    title={title}
+                    amount={amount}
+                    date={date}
+                    category={category}
+                    description={description}
+                    indicatorColor="var(--color-green)"
+                    deleteItem={deleteIncome}
+                  />
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </InnerLayout>
-    </IncomesStyled>
-  )
+        </InnerLayout>
+      </IncomesStyled>
+    )
+  } else {
+    return <Login />
+  }
+}
+
+Incomes.propTypes = {
+  session: PropTypes.object
 }
 
 const IncomesStyled = styled.div`

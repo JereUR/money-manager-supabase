@@ -1,55 +1,65 @@
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import { InnerLayout } from '../../styles/Layout'
 import { useGlobalContext } from '../../context/globalContext'
 import { useEffect } from 'react'
 import Item from '../Item/Item'
 import ExpenseForm from '../Form/ExpenseForm'
+import Login from '../Login/Login'
 
-export default function Expenses() {
+export default function Expenses({ session }) {
   const { expenses, getExpenses, deleteExpense, totalExpense } =
     useGlobalContext()
 
   useEffect(() => {
-    getExpenses()
-  }, [])
+    if (session !== null) getExpenses()
+  }, [session])
 
-  return (
-    <ExpensesStyled>
-      <InnerLayout>
-        <h1>Gastos</h1>
-        <h2 className="total-expense">
-          Gastos Totales: <span>${totalExpense()}</span>
-        </h2>
-        <div className="expense-content">
-          <div className="form-container">
-            <ExpenseForm />
-          </div>
-          <div className="expenses">
-            {expenses.map((Expense) => {
-              const { _id, title, amount, date, category, description } =
-                Expense
+  if (session !== null) {
+    return (
+      <ExpensesStyled>
+        <InnerLayout>
+          <h1>Gastos</h1>
+          <h2 className="total-expense">
+            Gastos Totales: <span>${totalExpense()}</span>
+          </h2>
+          <div className="expense-content">
+            <div className="form-container">
+              <ExpenseForm />
+            </div>
+            <div className="expenses">
+              {expenses.map((Expense) => {
+                const { _id, title, amount, date, category, description } =
+                  Expense
 
-              return (
-                <Item
-                  key={_id}
-                  id={_id}
-                  title={title}
-                  amount={amount}
-                  date={date}
-                  category={category}
-                  description={description}
-                  indicatorColor="var(--color-delete)"
-                  deleteItem={deleteExpense}
-                  type="expense"
-                />
-              )
-            })}
+                return (
+                  <Item
+                    key={_id}
+                    id={_id}
+                    title={title}
+                    amount={amount}
+                    date={date}
+                    category={category}
+                    description={description}
+                    indicatorColor="var(--color-delete)"
+                    deleteItem={deleteExpense}
+                    type="expense"
+                  />
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </InnerLayout>
-    </ExpensesStyled>
-  )
+        </InnerLayout>
+      </ExpensesStyled>
+    )
+  } else {
+    return <Login />
+  }
+}
+
+Expenses.propTypes = {
+  session: PropTypes.object
 }
 
 const ExpensesStyled = styled.div`

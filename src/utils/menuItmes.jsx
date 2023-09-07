@@ -8,13 +8,13 @@ export const menuItems = [
     link: '/panel-de-control'
   },
   {
-    id: 3,
+    id: 2,
     title: 'Ingresos',
     icon: trend,
     link: '/ingresos'
   },
   {
-    id: 4,
+    id: 3,
     title: 'Gastos',
     icon: expenses,
     link: '/gastos'

@@ -31,9 +31,19 @@ export default function Navigation({ active, setActive, session }) {
       </ul>
       <div className="bottom-nav">
         {session === null ? (
-          <li onClick={() => setActive(0)}>{login} Iniciar Sesión</li>
+          <li
+            onClick={() => setActive(0)}
+            className={active === 0 ? 'active' : ''}
+          >
+            {login} Iniciar Sesión
+          </li>
         ) : (
-          <li onClick={() => setActive(0)}>{signout} Cerrar Sesión</li>
+          <li
+            onClick={() => setActive(0)}
+            className={active === 0 ? 'active' : ''}
+          >
+            {signout} Cerrar Sesión
+          </li>
         )}
       </div>
     </NavStyled>
@@ -130,10 +140,27 @@ const NavStyled = styled.nav`
   }
 
   .bottom-nav {
-    cursor: pointer;
+    li {
+      display: grid;
+      grid-template-columns: 40px auto;
+      align-items: center;
+      margin: 0.6rem 0;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.4s ease-in-out;
+      color: rgba(34, 34, 96, 0.6);
+      padding-left: 1rem;
+      position: relative;
+
+      i {
+        color: rgba(34, 34, 96, 0.6);
+        font-size: 1.4rem;
+        transition: all 0.4s ease-in-out;
+      }
+    }
 
     .ti-login {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
     }
   }
 `

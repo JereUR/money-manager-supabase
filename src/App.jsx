@@ -36,15 +36,13 @@ function App() {
       case 0:
         return <Login />
       case 1:
-        return <Dashboard />
+        return <Dashboard session={session} />
       case 2:
-        return <Dashboard />
+        return <Incomes session={session} />
       case 3:
-        return <Incomes />
-      case 4:
-        return <Expenses />
+        return <Expenses session={session} />
       default:
-        return <Dashboard />
+        return <Dashboard session={session} />
     }
   }
 

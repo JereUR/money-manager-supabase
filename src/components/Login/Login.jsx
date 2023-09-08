@@ -61,7 +61,7 @@ const ButtonStyledGoogle = styled.button`
   }
 
   &:first-child {
-    margin-bottom: 3vw;
+    margin-bottom: 2vw;
   }
 `
 

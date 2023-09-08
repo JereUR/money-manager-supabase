@@ -1,35 +1,127 @@
-import styled from 'styled-components'
-import { githubIcon, googleIcon } from '../../utils/Icons'
-import { signInWithGithub, signInWithGoogle } from '../../services'
+import styled, { keyframes } from 'styled-components'
+import PropTypes from 'prop-types'
 
-export default function Login() {
+import { githubIcon /* , googleIcon */ } from '../../utils/Icons'
+import { signInWithGithub /* , signInWithGoogle */ } from '../../services'
+import { useState } from 'react'
+import Button from '../Button/Button'
+import { useGlobalContext } from '../../context/globalContext'
+
+export default function Login({ setActive }) {
+  const { error, setError } = useGlobalContext()
+
+  const initialData = {
+    email: '',
+    password: ''
+  }
+
+  const [inputState, setInputState] = useState(initialData)
+  const [errorForm, setErrorForm] = useState({})
+
+  const { email, password } = inputState
+
+  const validation = () => {
+    let err = {}
+
+    if (inputState.email === '') {
+      err.title = 'Ingrese un email.'
+    }
+
+    if (inputState.password === '') {
+      err.amount = 'Ingrese una contraseña.'
+    }
+
+    return err
+  }
+
+  const handleInput =
+    (name) =>
+    ({ target }) => {
+      setInputState({ ...inputState, [name]: target.value })
+    }
+
+  const handleEmail = async () => {} /* 
+
   const handleGoogle = async () => {
     const response = await signInWithGoogle()
 
     console.log({ response })
-  }
+  } */
 
   const handleGithub = async () => {
-    const response = await signInWithGithub()
-
-    console.log({ response })
+    await signInWithGithub()
   }
 
   return (
     <LoginStyled>
-      <h1>Inicia Sesión</h1>
-      <div className="button-section">
-        <ButtonStyledGoogle onClick={handleGoogle}>
-          {googleIcon}
-          Iniciar Sesión con Google
-        </ButtonStyledGoogle>
-        <ButtonStyledGithub onClick={handleGithub}>
-          {githubIcon}
-          Iniciar Sesión con Github
-        </ButtonStyledGithub>
+      <h2>Iniciar Sesión</h2>
+      <div className="login-section">
+        <p className="login-email">Con tu email y contraseña:</p>
+        <LoginFormStyled onSubmit={handleEmail}>
+          {error && <p className="error">{error}</p>}
+          <div className="input-control">
+            <input
+              type="email"
+              value={email}
+              name="email"
+              placeholder="Ingrese su email"
+              onChange={handleInput('email')}
+            />
+            {errorForm.email && <span>{errorForm.email}</span>}
+          </div>
+          <div className="input-control">
+            <input
+              type="password"
+              value={password}
+              name="password"
+              placeholder="Ingrese su contraseña"
+              onChange={handleInput('password')}
+            />
+            {errorForm.password && <span>{errorForm.password}</span>}
+          </div>
+          <div className="submit-btn">
+            <Button
+              name={'Iniciar Sesión'}
+              bPad={'.8rem 1.6rem'}
+              bRad={'30px'}
+              bg={'var(--color-accent)'}
+              color={'#fff'}
+            />
+          </div>
+        </LoginFormStyled>
+        <div className="separator">
+          <hr className="continuous-line" />
+          <span>o</span>
+          <hr className="continuous-line" />
+        </div>
+        <div className="button-section">
+          {/* <ButtonStyledGoogle onClick={handleGoogle}>
+            {googleIcon}
+            Iniciar Sesión con Google
+          </ButtonStyledGoogle> */}
+          <ButtonStyledGithub onClick={handleGithub}>
+            {githubIcon}
+            Iniciar Sesión con Github
+          </ButtonStyledGithub>
+        </div>
+        <h5>
+          No tienes cuenta? Regístrate{' '}
+          <span
+            className="redirect"
+            onClick={() => {
+              setActive(4)
+            }}
+          >
+            aquí
+          </span>
+        </h5>
       </div>
     </LoginStyled>
   )
+}
+
+Login.propTypes = {
+  setActive: PropTypes.func.isRequired
 }
 
 const ButtonStyledGoogle = styled.button`
@@ -71,24 +163,52 @@ const ButtonStyledGithub = styled(ButtonStyledGoogle)`
 `
 
 const LoginStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid var(--border-color);
-  box-shadow: 0px 1px 15px rgba(158, 157, 157, 0.4);
-  border-radius: 20px;
-  margin: 10vh;
-  padding-bottom: 10vh;
-  height: 70vh;
+  .login-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--border-color);
+    box-shadow: 0px 1px 15px rgba(158, 157, 157, 0.4);
+    border-radius: 20px;
+    margin: 5vh;
+    padding-bottom: 10vh;
+    height: 70vh;
+
+    .redirect {
+      color: var(--color-accent);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .login-email {
+      font-size: 16px;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .continuous-line {
+      flex-grow: 1;
+      border: none;
+      height: 1.5px;
+      width: 10vw;
+      background-color: black;
+      margin: 0 10px;
+    }
+  }
 
   @media screen and (max-width: 960px) {
     margin: 10vh 20px;
   }
 
-  h1 {
+  h2 {
     text-align: center;
-    margin-top: 5vw;
+    margin-top: 2vw;
   }
 
   .button-section {
@@ -96,6 +216,85 @@ const LoginStyled = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 10vh;
+    margin-top: 2vh;
+  }
+`
+
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
+
+const LoginFormStyled = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  font-size: 14px;
+
+  .error {
+    font-size: 14px;
+    margin-left: 1rem;
+    color: var(--color-delete);
+    animation: ${shake} 0.6s;
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    border: none;
+    text-align: center;
+    padding: 0.5rem 5rem;
+    border-radius: 5px;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    resize: none;
+    box-shadow: 0px 1px 15px rgba(158, 157, 157, 0.4);
+    color: rgba(34, 34, 96, 0.9);
+
+    &::placeholder {
+      color: rgba(34, 34, 96, 0.7);
+    }
+  }
+
+  .input-control {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+    }
+
+    span {
+      font-size: 14px;
+      margin-left: 1rem;
+      color: var(--color-delete);
+      animation: ${shake} 0.6s;
+    }
+  }
+
+  .submit-btn {
+    display: flex;
+    justify-content: center;
+
+    button {
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background: var(--color-green) !important;
+      }
+    }
   }
 `

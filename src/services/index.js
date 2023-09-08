@@ -81,6 +81,24 @@ export const deleteExpenseFromSupabase = async (id) => {
 
 //Session
 
+export const signUpWithEmail = async (credentials) => {
+  const { data, error } = await supabase.auth.signUp({
+    email: credentials.email,
+    password: credentials.password
+  })
+
+  return [data, error]
+}
+
+export const signInWithEmail = async (credentials) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: credentials.email,
+    password: credentials.password
+  })
+
+  return [data, error]
+}
+
 export const signInWithGoogle = async () => {
   const { user, error } = await supabase.auth.signInWithOAuth({
     provider: 'google'

@@ -11,6 +11,7 @@ import Expenses from './components/Expenses/Expenses'
 import Login from './components/Login/Login'
 import { useGlobalContext } from './context/globalContext'
 import useUpdateSession from './utils/useUpdateSession'
+import SignUp from './components/SignUp/SignUp'
 
 function App() {
   const [active, setActive] = useState(1)
@@ -20,13 +21,15 @@ function App() {
   const displayData = () => {
     switch (active) {
       case 0:
-        return <Login />
+        return <Login setActive={setActive} />
       case 1:
         return <Dashboard session={session} />
       case 2:
         return <Incomes session={session} />
       case 3:
         return <Expenses session={session} />
+      case 4:
+        return <SignUp setActive={setActive} />
       default:
         return <Dashboard session={session} />
     }

@@ -20,7 +20,7 @@ export default function Button({ name, icon, onClick, bg, bPad, color, bRad }) {
 
 Button.propTypes = {
   name: PropTypes.string,
-  icon: PropTypes.object.isRequired,
+  icon: PropTypes.object,
   onClick: PropTypes.func,
   bg: PropTypes.string.isRequired,
   bPad: PropTypes.string.isRequired,

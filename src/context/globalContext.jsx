@@ -23,7 +23,10 @@ export const GlobalProvider = ({ children }) => {
 
   const getIncomes = async () => {
     const response = await getIncomesFromSupabase()
-    setIncomes(response.incomes)
+
+    if (response[0] === null) {
+      setIncomes(response[1])
+    }
   }
 
   const deleteIncome = async (id) => {
@@ -51,7 +54,10 @@ export const GlobalProvider = ({ children }) => {
 
   const getExpenses = async () => {
     const response = await getExpensesFromSupabase()
-    setExpenses(response.expenses)
+
+    if (response[0] === null) {
+      setExpenses(response[1])
+    }
   }
 
   const deleteExpense = async (id) => {

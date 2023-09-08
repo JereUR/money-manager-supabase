@@ -1,35 +1,21 @@
 import styled from 'styled-components'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import bg from './img/bg.jpg'
 import { MainLayout } from './styles/Layout'
 import Orb from './components/Orb/Orb'
-import { supabase } from './services/supabase'
 import Navigation from './components/Navigation/Navigation'
 import Dashboard from './components/Dashboard/Dashboard'
 import Incomes from './components/Incomes/Incomes'
 import Expenses from './components/Expenses/Expenses'
 import Login from './components/Login/Login'
+import { useGlobalContext } from './context/globalContext'
+import useUpdateSession from './utils/useUpdateSession'
 
 function App() {
-  const [session, setSession] = useState(null)
   const [active, setActive] = useState(1)
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      if (session === null) {
-        setActive(0)
-      }
-    })
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      if (session === null) {
-        setActive(0)
-      }
-    })
-  }, [])
+  const { session } = useGlobalContext()
+  useUpdateSession({ session, setActive })
 
   const displayData = () => {
     switch (active) {

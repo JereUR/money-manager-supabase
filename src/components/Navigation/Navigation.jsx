@@ -4,12 +4,15 @@ import PropTypes from 'prop-types'
 import avatar from '../../img/logo.png'
 import { menuItems } from '../../utils/menuItmes'
 import { signout, login } from '../../utils/Icons'
+import { signOutFromSupabase } from '../../services'
 
 export default function Navigation({ active, setActive, session }) {
+  const userAvatar = session ? session.user.user_metadata.avatar_url : avatar
+
   return (
     <NavStyled>
       <div className="user-con">
-        <img src={avatar} alt="avatar" />
+        <img src={userAvatar} alt="avatar" />
         <div className="text">
           <h2>Username</h2>
           <p>Tu Dinero</p>
@@ -20,7 +23,9 @@ export default function Navigation({ active, setActive, session }) {
           return (
             <li
               key={item.id}
-              onClick={() => setActive(item.id)}
+              onClick={() => {
+                setActive(item.id)
+              }}
               className={active === item.id ? 'active' : ''}
             >
               {item.icon}
@@ -39,7 +44,7 @@ export default function Navigation({ active, setActive, session }) {
           </li>
         ) : (
           <li
-            onClick={() => setActive(0)}
+            onClick={() => signOutFromSupabase()}
             className={active === 0 ? 'active' : ''}
           >
             {signout} Cerrar Sesión

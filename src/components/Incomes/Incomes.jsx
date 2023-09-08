@@ -15,8 +15,6 @@ export default function Incomes({ session }) {
     if (session !== null) getIncomes()
   }, [session])
 
-  console.log(incomes)
-
   if (session !== null) {
     return (
       <IncomesStyled>

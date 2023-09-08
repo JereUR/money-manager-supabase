@@ -15,6 +15,8 @@ export default function Incomes({ session }) {
     if (session !== null) getIncomes()
   }, [session])
 
+  console.log(incomes)
+
   if (session !== null) {
     return (
       <IncomesStyled>
@@ -29,13 +31,13 @@ export default function Incomes({ session }) {
             </div>
             <div className="incomes">
               {incomes.map((income) => {
-                const { _id, title, amount, date, category, description } =
+                const { id, title, amount, date, category, description } =
                   income
 
                 return (
                   <Item
-                    key={_id}
-                    id={_id}
+                    key={id}
+                    id={id}
                     title={title}
                     amount={amount}
                     date={date}

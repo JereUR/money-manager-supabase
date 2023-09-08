@@ -30,13 +30,13 @@ export default function Expenses({ session }) {
             </div>
             <div className="expenses">
               {expenses.map((Expense) => {
-                const { _id, title, amount, date, category, description } =
+                const { id, title, amount, date, category, description } =
                   Expense
 
                 return (
                   <Item
-                    key={_id}
-                    id={_id}
+                    key={id}
+                    id={id}
                     title={title}
                     amount={amount}
                     date={date}

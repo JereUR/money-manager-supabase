@@ -9,20 +9,24 @@ export default function History() {
   return (
     <HistoryStyled>
       <h2>Historial Reciente</h2>
-      {history.map((item) => {
-        const { _id, title, amount, type } = item
+      {history.length > 0 ? (
+        history.map((item) => {
+          const { id, title, amount, type } = item
 
-        return (
-          <div key={_id} className="history-item">
-            <p style={{ color: type === 'expense' ? '#e20d0d' : '#66b436' }}>
-              {title}
-            </p>
-            <p style={{ color: type === 'expense' ? '#e20d0d' : '#66b436' }}>
-              {type === 'expense' ? `-${amount}` : `+${amount}`}
-            </p>
-          </div>
-        )
-      })}
+          return (
+            <div key={id} className="history-item">
+              <p style={{ color: type === 'expense' ? '#e20d0d' : '#66b436' }}>
+                {title}
+              </p>
+              <p style={{ color: type === 'expense' ? '#e20d0d' : '#66b436' }}>
+                {type === 'expense' ? `-${amount}` : `+${amount}`}
+              </p>
+            </div>
+          )
+        })
+      ) : (
+        <h4>Sin Información</h4>
+      )}
     </HistoryStyled>
   )
 }
@@ -42,5 +46,11 @@ const HistoryStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  h4 {
+    text-align: center;
+    font-weight: 200;
+    font-style: italic;
   }
 `

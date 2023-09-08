@@ -1,16 +1,29 @@
 import styled from 'styled-components'
 import { githubIcon, googleIcon } from '../../utils/Icons'
+import { signInWithGithub, signInWithGoogle } from '../../services'
 
 export default function Login() {
+  const handleGoogle = async () => {
+    const response = await signInWithGoogle()
+
+    console.log({ response })
+  }
+
+  const handleGithub = async () => {
+    const response = await signInWithGithub()
+
+    console.log({ response })
+  }
+
   return (
     <LoginStyled>
       <h1>Inicia Sesión</h1>
       <div className="button-section">
-        <ButtonStyledGoogle>
+        <ButtonStyledGoogle onClick={handleGoogle}>
           {googleIcon}
           Iniciar Sesión con Google
         </ButtonStyledGoogle>
-        <ButtonStyledGithub>
+        <ButtonStyledGithub onClick={handleGithub}>
           {githubIcon}
           Iniciar Sesión con Github
         </ButtonStyledGithub>
@@ -24,7 +37,6 @@ const ButtonStyledGoogle = styled.button`
   display: flex;
   justify-content: center;
   padding: 0.5rem 1.4rem;
-  margin-bottom: 3vw;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 700;
@@ -47,6 +59,10 @@ const ButtonStyledGoogle = styled.button`
   &:hover {
     transform: scale(1.02);
   }
+
+  &:first-child {
+    margin-bottom: 3vw;
+  }
 `
 
 const ButtonStyledGithub = styled(ButtonStyledGoogle)`
@@ -55,6 +71,21 @@ const ButtonStyledGithub = styled(ButtonStyledGoogle)`
 `
 
 const LoginStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--border-color);
+  box-shadow: 0px 1px 15px rgba(158, 157, 157, 0.4);
+  border-radius: 20px;
+  margin: 10vh;
+  padding-bottom: 10vh;
+  height: 70vh;
+
+  @media screen and (max-width: 960px) {
+    margin: 10vh 20px;
+  }
+
   h1 {
     text-align: center;
     margin-top: 5vw;
@@ -65,6 +96,6 @@ const LoginStyled = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 65vh;
+    margin-top: 10vh;
   }
 `

@@ -8,16 +8,20 @@ import { useGlobalContext } from '../../context/globalContext'
 import Button from '../Button/Button'
 import { plus } from '../../utils/Icons'
 
-const initialData = {
-  title: '',
-  amount: '',
-  date: '',
-  category: '',
-  description: ''
-}
-
 export default function ExpenseForm() {
-  const { addExpense, getExpenses, error, setError } = useGlobalContext()
+  const { addExpense, getExpenses, error, setError, session } =
+    useGlobalContext()
+
+  const initialData = {
+    title: '',
+    amount: '',
+    date: '',
+    category: '',
+    description: '',
+    type: 'expense',
+    user_id: session.user.id
+  }
+
   const [inputState, setInputState] = useState(initialData)
   const [errorForm, setErrorForm] = useState({})
 

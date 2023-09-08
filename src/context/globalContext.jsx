@@ -1,24 +1,44 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
-import { getExpensesFromSupabase, getIncomesFromSupabase } from '../services'
+
+import {
+  addExpenseToSupabase,
+  addIncomeToSupabase,
+  deleteExpenseFromSupabase,
+  deleteIncomeFromSupabase,
+  getExpensesFromSupabase,
+  getIncomesFromSupabase
+} from '../services'
+import { supabase } from '../services/supabase'
 
 const GlobalContext = createContext()
-
-const BASE_URL = import.meta.env.VITE_BASE_URL
 
 export const GlobalProvider = ({ children }) => {
   const [incomes, setIncomes] = useState([])
   const [expenses, setExpenses] = useState([])
   const [error, setError] = useState(null)
+  const [session, setSession] = useState(null)
+
+  //Session
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
 
   //Incomes
 
   const addIncome = async (income) => {
-    await axios.post(`${BASE_URL}add-income`, income).catch((err) => {
-      setError(err.response.data.message)
-    })
-    getIncomes()
+    const response = await addIncomeToSupabase(income)
+
+    if (response[0] === null) {
+      getIncomes()
+    }
   }
 
   const getIncomes = async () => {
@@ -30,8 +50,9 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const deleteIncome = async (id) => {
-    await axios.delete(`${BASE_URL}delete-income/${id}`)
-    getIncomes()
+    const response = await deleteIncomeFromSupabase(id)
+
+    if (response[1] === null) getIncomes()
   }
 
   const totalIncome = () => {
@@ -46,10 +67,11 @@ export const GlobalProvider = ({ children }) => {
   //Expenses
 
   const addExpense = async (expense) => {
-    await axios.post(`${BASE_URL}add-expense`, expense).catch((err) => {
-      setError(err.response.data.message)
-    })
-    getExpenses()
+    const response = await addExpenseToSupabase(expense)
+
+    if (response[0] === null) {
+      getExpenses()
+    }
   }
 
   const getExpenses = async () => {
@@ -61,8 +83,9 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const deleteExpense = async (id) => {
-    await axios.delete(`${BASE_URL}delete-expense/${id}`)
-    getExpenses()
+    const response = await deleteExpenseFromSupabase(id)
+
+    if (response[1] === null) getExpenses()
   }
 
   const totalExpense = () => {
@@ -106,7 +129,8 @@ export const GlobalProvider = ({ children }) => {
         totalBalance,
         transactionHistory,
         error,
-        setError
+        setError,
+        session
       }}
     >
       {children}

@@ -2,20 +2,24 @@ import { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+
 import { useGlobalContext } from '../../context/globalContext'
 import Button from '../Button/Button'
 import { plus } from '../../utils/Icons'
 
-const initialData = {
-  title: '',
-  amount: '',
-  date: '',
-  category: '',
-  description: ''
-}
-
 export default function IncomeForm() {
-  const { addIncome, getIncomes, error, setError } = useGlobalContext()
+  const { addIncome, getIncomes, error, setError, session } = useGlobalContext()
+
+  const initialData = {
+    title: '',
+    amount: '',
+    date: '',
+    category: '',
+    description: '',
+    type: 'income',
+    user_id: session.user.id
+  }
+
   const [inputState, setInputState] = useState(initialData)
   const [errorForm, setErrorForm] = useState({})
 

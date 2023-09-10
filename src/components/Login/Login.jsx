@@ -24,11 +24,11 @@ export default function Login({ setActive }) {
     let err = {}
 
     if (inputState.email === '') {
-      err.title = 'Ingrese un email.'
+      err.email = 'Ingrese un email.'
     }
 
     if (inputState.password === '') {
-      err.amount = 'Ingrese una contraseña.'
+      err.password = 'Ingrese una contraseña.'
     }
 
     return err
@@ -84,7 +84,7 @@ export default function Login({ setActive }) {
               name={'Iniciar Sesión'}
               bPad={'.8rem 1.6rem'}
               bRad={'30px'}
-              bg={'var(--color-accent)'}
+              bg={'var(--primary-button)'}
               color={'#fff'}
             />
           </div>
@@ -121,8 +121,20 @@ export default function Login({ setActive }) {
 }
 
 Login.propTypes = {
-  setActive: PropTypes.func.isRequired
+  setActive: PropTypes.func
 }
+
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
 
 const ButtonStyledGoogle = styled.button`
   width: 320px;
@@ -172,7 +184,6 @@ const LoginStyled = styled.div`
     box-shadow: 0px 1px 15px rgba(158, 157, 157, 0.4);
     border-radius: 20px;
     margin: 5vh;
-    padding-bottom: 10vh;
     height: 70vh;
 
     .redirect {
@@ -220,25 +231,13 @@ const LoginStyled = styled.div`
   }
 `
 
-const shake = keyframes`
-  0%, 100% {
-    transform: translateX(0);
-  }
-  20%, 60%{
-    transform: translateX(-5px);
-  }
-  40%, 80% {
-    transform: translateX(5px);
-  }
-  `
-
 const LoginFormStyled = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-  font-size: 14px;
+  font-size: 16px;
 
   .error {
     font-size: 14px;
@@ -287,6 +286,7 @@ const LoginFormStyled = styled.form`
   .submit-btn {
     display: flex;
     justify-content: center;
+    margin: 10px 0;
 
     button {
       box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);

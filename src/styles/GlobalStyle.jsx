@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
 
 :root{
   --primary-color:#222260;
+  --primary-button:#260e4d;
   --primary-color2:rgba(34, 34, 96, 0.8);
   --primary-color3:rgba(34, 34, 96, 0.4);
   --border-color:rgba(182, 182, 197, 0.7);

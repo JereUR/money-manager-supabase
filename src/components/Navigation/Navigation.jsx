@@ -7,15 +7,15 @@ import { signout, login } from '../../utils/Icons'
 import { signOutFromSupabase } from '../../services'
 
 export default function Navigation({ active, setActive, session }) {
+  const avatarURL =
+    session !== null ? session.user.user_metadata.avatar_url : null
+
   return (
     <NavStyled>
       <div className="user-con">
-        <img
-          src={session ? session.user.user_metadata.avatar_url : avatar}
-          alt="avatar"
-        />
+        <img src={avatarURL !== null ? avatarURL : avatar} alt="avatar" />
         <div className="text">
-          <h2>{session ? session.user.user_metadata.name : 'Username'}</h2>
+          <h2>{session ? session.user.user_metadata.user_name : 'Username'}</h2>
           <p>Tu Dinero</p>
         </div>
       </div>

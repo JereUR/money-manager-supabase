@@ -2,13 +2,18 @@ import styled, { keyframes } from 'styled-components'
 import PropTypes from 'prop-types'
 
 import { githubIcon /* , googleIcon */ } from '../../utils/Icons'
-import { signInWithGithub /* , signInWithGoogle */ } from '../../services'
+import {
+  signInWithEmail,
+  signInWithGithub /* , signInWithGoogle */
+} from '../../services'
 import { useState } from 'react'
 import Button from '../Button/Button'
 import { useGlobalContext } from '../../context/globalContext'
+import { Loader } from '../Loader/Loader'
 
 export default function Login({ setActive }) {
   const { error, setError } = useGlobalContext()
+  const [loading, setLoading] = useState(false)
 
   const initialData = {
     email: '',
@@ -40,13 +45,29 @@ export default function Login({ setActive }) {
       setInputState({ ...inputState, [name]: target.value })
     }
 
-  const handleEmail = async () => {} /* 
+  const handleEmail = async (e) => {
+    e.preventDefault()
+    setLoading(true)
 
-  const handleGoogle = async () => {
-    const response = await signInWithGoogle()
+    const err = validation()
+    setErrorForm(err)
 
-    console.log({ response })
-  } */
+    if (Object.keys(err).length === 0) {
+      const { error: errorSignIn } = await signInWithEmail({
+        email: inputState.email,
+        password: inputState.password
+      })
+
+      if (errorSignIn !== null && errorSignIn !== undefined) {
+        setError(errorSignIn)
+        return
+      }
+
+      setInputState(initialData)
+
+      setLoading(false)
+    }
+  }
 
   const handleGithub = async () => {
     await signInWithGithub()
@@ -88,6 +109,7 @@ export default function Login({ setActive }) {
               color={'#fff'}
             />
           </div>
+          {loading && <Loader />}
         </LoginFormStyled>
         <div className="separator">
           <hr className="continuous-line" />

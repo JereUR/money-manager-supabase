@@ -1,18 +1,17 @@
 import styled, { keyframes } from 'styled-components'
 import PropTypes from 'prop-types'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-import { githubIcon /* , googleIcon */ } from '../../utils/Icons'
-import {
-  signInWithEmail,
-  signInWithGithub /* , signInWithGoogle */,
-  signUpWithEmail
-} from '../../services'
+import { signUpWithEmail } from '../../services'
 import { useState } from 'react'
 import Button from '../Button/Button'
 import { useGlobalContext } from '../../context/globalContext'
+import { Loader } from '../Loader/Loader'
 
 export default function SignUp({ setActive }) {
   const { error, setError } = useGlobalContext()
+  const [loading, setLoading] = useState(false)
 
   const initialData = {
     name: '',
@@ -78,6 +77,7 @@ export default function SignUp({ setActive }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const err = validation()
     setErrorForm(err)
@@ -87,24 +87,36 @@ export default function SignUp({ setActive }) {
         inputState
       )
 
-      if (errorSignUp !== null) {
+      if (errorSignUp !== null && errorSignUp !== undefined) {
         setError(errorSignUp)
+        return
       }
 
-      if (errorUpdate !== null) {
+      if (errorUpdate !== null && errorUpdate !== undefined) {
         setError(errorUpdate)
+        return
       }
 
-      if (errorSignUp === null && errorUpdate === null) {
-        console.log('hello')
-        const { error: errorSignIn } = await signInWithEmail({
-          email: inputState.email,
-          password: inputState.password
-        })
+      setInputState(initialData)
 
-        console.log({ errorSignIn })
-        setInputState(initialData)
-      }
+      toast.success(
+        'Registro exitoso. Chequea tu email y confirma tu cuenta para poder iniciar sesión. Redirigiendo...',
+        {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        }
+      )
+
+      setTimeout(() => {
+        setActive(0)
+        setLoading(false)
+      }, 4000)
     }
   }
 
@@ -175,8 +187,21 @@ export default function SignUp({ setActive }) {
               color={'#fff'}
             />
           </div>
+          {loading && <Loader />}
         </SignUpFormStyled>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </SignUpStyled>
   )
 }

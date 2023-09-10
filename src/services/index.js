@@ -11,7 +11,7 @@ export const getUserFromSupabase = async () => {
 export const getIncomesFromSupabase = async () => {
   const user = await getUserFromSupabase()
 
-  if (user === null) return
+  if (user === null || user.data.user === null) return
 
   const { data: incomes, error } = await supabase
     .from('incomes')
@@ -46,7 +46,8 @@ export const deleteIncomeFromSupabase = async (id) => {
 export const getExpensesFromSupabase = async () => {
   const user = await getUserFromSupabase()
 
-  if (user === null) throw new Error({ message: 'Sesión no iniciada.' })
+  if (user === null || user.data.user === null)
+    throw new Error({ message: 'Sesión no iniciada.' })
 
   const { data: expenses, error } = await supabase
     .from('expenses')
@@ -82,14 +83,11 @@ export const deleteExpenseFromSupabase = async (id) => {
 //Session
 
 export const updateUser = async (credentials, user) => {
-  console.log({ user })
   const { error: errorUpdate } = await supabase
     .from('users')
     .update({ name: credentials.name, user_name: credentials.user_name })
     .eq('id', user.user.id)
     .select()
-
-  console.log({ errorUpdate })
 
   return [errorUpdate]
 }
@@ -105,8 +103,6 @@ export const signUpWithEmail = async (credentials) => {
 
     return [data, error, errorUpdate]
   }
-
-  console.log({ error, data })
 
   return [data, error]
 }

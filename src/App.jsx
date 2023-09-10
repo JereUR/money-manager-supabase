@@ -14,7 +14,7 @@ import useUpdateSession from './utils/useUpdateSession'
 import SignUp from './components/SignUp/SignUp'
 
 function App() {
-  const [active, setActive] = useState(1)
+  const [active, setActive] = useState(0)
   const { session } = useGlobalContext()
   useUpdateSession({ session, setActive })
 

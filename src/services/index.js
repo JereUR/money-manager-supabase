@@ -81,19 +81,40 @@ export const deleteExpenseFromSupabase = async (id) => {
 
 //Session
 
+export const updateUser = async (credentials, user) => {
+  console.log({ user })
+  const { error: errorUpdate } = await supabase
+    .from('users')
+    .update({ name: credentials.name, user_name: credentials.user_name })
+    .eq('id', user.user.id)
+    .select()
+
+  console.log({ errorUpdate })
+
+  return [errorUpdate]
+}
+
 export const signUpWithEmail = async (credentials) => {
   const { data, error } = await supabase.auth.signUp({
     email: credentials.email,
     password: credentials.password
   })
 
+  if (error === null) {
+    const { errorUpdate } = await updateUser(credentials, data)
+
+    return [data, error, errorUpdate]
+  }
+
+  console.log({ error, data })
+
   return [data, error]
 }
 
-export const signInWithEmail = async (credentials) => {
+export const signInWithEmail = async ({ email, password }) => {
   const { data, error } = await supabase.auth.signInWithPassword({
-    email: credentials.email,
-    password: credentials.password
+    email: email,
+    password: password
   })
 
   return [data, error]

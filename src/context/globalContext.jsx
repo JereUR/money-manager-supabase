@@ -16,24 +16,46 @@ const GlobalContext = createContext()
 export const GlobalProvider = ({ children }) => {
   const [incomes, setIncomes] = useState([])
   const [expenses, setExpenses] = useState([])
+  const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
   const [session, setSession] = useState(null)
 
   //Session
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data)
+
+      if (data.session !== null) {
+        getUserInfo(data.session.user.id)
+      }
     })
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
+
+      if (session !== null) {
+        getUserInfo(session.user.id)
+      }
     })
   }, [])
+
+  const getUserInfo = async (id) => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', id)
+
+    if (error === null) {
+      setUser(data)
+    }
+  }
 
   //Incomes
 
   const addIncome = async (income) => {
+    if (user === null) return
+
     const response = await addIncomeToSupabase(income)
 
     if (response[0] === null) {
@@ -42,6 +64,8 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const getIncomes = async () => {
+    if (user === null) return
+
     const response = await getIncomesFromSupabase()
 
     if (response[0] === null) {
@@ -67,6 +91,8 @@ export const GlobalProvider = ({ children }) => {
   //Expenses
 
   const addExpense = async (expense) => {
+    if (user === null) return
+
     const response = await addExpenseToSupabase(expense)
 
     if (response[0] === null) {
@@ -75,6 +101,8 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const getExpenses = async () => {
+    if (user === null) return
+
     const response = await getExpensesFromSupabase()
 
     if (response[0] === null) {
@@ -130,7 +158,8 @@ export const GlobalProvider = ({ children }) => {
         transactionHistory,
         error,
         setError,
-        session
+        session,
+        user
       }}
     >
       {children}

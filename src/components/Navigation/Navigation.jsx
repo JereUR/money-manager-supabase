@@ -5,17 +5,20 @@ import avatar from '../../img/logo.png'
 import { menuItems } from '../../utils/menuItmes'
 import { signout, login } from '../../utils/Icons'
 import { signOutFromSupabase } from '../../services'
+import { useGlobalContext } from '../../context/globalContext'
 
 export default function Navigation({ active, setActive, session }) {
-  const avatarURL =
-    session !== null ? session.user.user_metadata.avatar_url : null
+  const { user } = useGlobalContext()
+
+  const avatarURL = user ? user[0]?.avatar_url : null
+  const username = user ? user[0]?.user_name : 'Username'
 
   return (
     <NavStyled>
       <div className="user-con">
-        <img src={avatarURL !== null ? avatarURL : avatar} alt="avatar" />
+        <img src={avatarURL ? avatarURL : avatar} alt="avatar" />
         <div className="text">
-          <h2>{session ? session.user.user_metadata.user_name : 'Username'}</h2>
+          <h2>{username}</h2>
           <p>Tu Dinero</p>
         </div>
       </div>

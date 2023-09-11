@@ -47,26 +47,29 @@ export default function Login({ setActive }) {
 
   const handleEmail = async (e) => {
     e.preventDefault()
-    setLoading(true)
 
     const err = validation()
     setErrorForm(err)
 
     if (Object.keys(err).length === 0) {
-      const { error: errorSignIn } = await signInWithEmail({
+      setLoading(true)
+      const { error } = await signInWithEmail({
         email: inputState.email,
         password: inputState.password
       })
 
-      if (errorSignIn !== null && errorSignIn !== undefined) {
-        setError(errorSignIn)
-        return
+      if (error !== null && error !== undefined) {
+        if (error.message.includes('Invalid login credentials')) {
+          setError('Credenciales incorrectas.')
+          setLoading(false)
+          return
+        }
       }
 
       setInputState(initialData)
-
-      setLoading(false)
     }
+
+    setLoading(false)
   }
 
   const handleGithub = async () => {
@@ -131,6 +134,7 @@ export default function Login({ setActive }) {
           <span
             className="redirect"
             onClick={() => {
+              setError(null)
               setActive(4)
             }}
           >

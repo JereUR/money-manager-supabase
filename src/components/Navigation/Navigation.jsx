@@ -8,7 +8,7 @@ import { signOutFromSupabase } from '../../services'
 import { useGlobalContext } from '../../context/globalContext'
 
 export default function Navigation({ active, setActive, session }) {
-  const { user } = useGlobalContext()
+  const { user, setError } = useGlobalContext()
 
   const avatarURL = user ? user[0]?.avatar_url : null
   const username = user ? user[0]?.user_name : 'Username'
@@ -28,7 +28,8 @@ export default function Navigation({ active, setActive, session }) {
             <li
               key={item.id}
               onClick={() => {
-                setActive(item.id)
+                if (session !== null && session?.session !== null)
+                  setActive(item.id)
               }}
               className={active === item.id ? 'active' : ''}
             >
@@ -39,9 +40,12 @@ export default function Navigation({ active, setActive, session }) {
         })}
       </ul>
       <div className="bottom-nav">
-        {session === null ? (
+        {session === null || session?.session === null ? (
           <li
-            onClick={() => setActive(0)}
+            onClick={() => {
+              setError(null)
+              setActive(0)
+            }}
             className={active === 0 ? 'active' : ''}
           >
             {login} Iniciar Sesión

@@ -8,6 +8,7 @@ import { useState } from 'react'
 import Button from '../Button/Button'
 import { useGlobalContext } from '../../context/globalContext'
 import { Loader } from '../Loader/Loader'
+import { arrowBack } from '../../utils/Icons'
 
 export default function SignUp({ setActive }) {
   const { error, setError } = useGlobalContext()
@@ -77,23 +78,23 @@ export default function SignUp({ setActive }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
-    setLoading(true)
 
     const err = validation()
     setErrorForm(err)
 
     if (Object.keys(err).length === 0) {
+      setLoading(true)
       const { error: errorSignUp, errorUpdate } = await signUpWithEmail(
         inputState
       )
 
       if (errorSignUp !== null && errorSignUp !== undefined) {
-        setError(errorSignUp)
+        setError(errorSignUp.message)
         return
       }
 
       if (errorUpdate !== null && errorUpdate !== undefined) {
-        setError(errorUpdate)
+        setError(errorUpdate.message)
         return
       }
 
@@ -115,15 +116,24 @@ export default function SignUp({ setActive }) {
 
       setTimeout(() => {
         setActive(0)
-        setLoading(false)
       }, 4000)
     }
+
+    setLoading(false)
   }
 
   return (
     <SignUpStyled>
       <h2>Registro</h2>
       <div className="signup-section">
+        <ButtonBack
+          onClick={() => {
+            setError(null)
+            setActive(0)
+          }}
+        >
+          {arrowBack} <span>Volver</span>
+        </ButtonBack>
         <SignUpFormStyled onSubmit={handleSignUp}>
           {error && <p className="error">{error}</p>}
           <div className="input-control">
@@ -221,6 +231,30 @@ const shake = keyframes`
     transform: translateX(5px);
   }
   `
+
+const ButtonBack = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 17%;
+  left: 6%;
+  color: var(--primary-color2);
+  transition: all 0.3s ease-in-out;
+
+  span {
+    position: absolute;
+    top: 17%;
+    font-size: 18px;
+    margin-left: 10px;
+    font-weight: bold;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    color: var(--primary-color);
+  }
+`
 
 const SignUpStyled = styled.div`
   .signup-section {

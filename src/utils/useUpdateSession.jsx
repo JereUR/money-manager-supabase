@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export default function useUpdateSession({ session, setActive }) {
   useEffect(() => {
-    if (session !== null) {
+    if (session !== null && session?.session !== null) {
       setActive(1)
     } else {
       setActive(0)

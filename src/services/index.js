@@ -101,10 +101,10 @@ export const signUpWithEmail = async (credentials) => {
   if (error === null) {
     const { errorUpdate } = await updateUser(credentials, data)
 
-    return [data, error, errorUpdate]
+    return { data, error, errorUpdate }
   }
 
-  return [data, error]
+  return { data, error }
 }
 
 export const signInWithEmail = async ({ email, password }) => {
@@ -113,7 +113,7 @@ export const signInWithEmail = async ({ email, password }) => {
     password: password
   })
 
-  return [data, error]
+  return { data, error }
 }
 
 export const signInWithGoogle = async () => {

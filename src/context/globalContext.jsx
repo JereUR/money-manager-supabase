@@ -56,9 +56,9 @@ export const GlobalProvider = ({ children }) => {
   const addIncome = async (income) => {
     if (user === null) return
 
-    const response = await addIncomeToSupabase(income)
+    const { error } = await addIncomeToSupabase(income)
 
-    if (response[0] === null) {
+    if (error === null) {
       getIncomes()
     }
   }
@@ -66,17 +66,17 @@ export const GlobalProvider = ({ children }) => {
   const getIncomes = async () => {
     if (user === null) return
 
-    const response = await getIncomesFromSupabase()
+    const { error, incomes } = await getIncomesFromSupabase()
 
-    if (response[0] === null) {
-      setIncomes(response[1])
+    if (error === null) {
+      setIncomes(incomes)
     }
   }
 
   const deleteIncome = async (id) => {
-    const response = await deleteIncomeFromSupabase(id)
+    const { error } = await deleteIncomeFromSupabase(id)
 
-    if (response[1] === null) getIncomes()
+    if (error === null) getIncomes()
   }
 
   const totalIncome = () => {
@@ -93,9 +93,9 @@ export const GlobalProvider = ({ children }) => {
   const addExpense = async (expense) => {
     if (user === null) return
 
-    const response = await addExpenseToSupabase(expense)
+    const { error } = await addExpenseToSupabase(expense)
 
-    if (response[0] === null) {
+    if (error === null) {
       getExpenses()
     }
   }
@@ -103,17 +103,17 @@ export const GlobalProvider = ({ children }) => {
   const getExpenses = async () => {
     if (user === null) return
 
-    const response = await getExpensesFromSupabase()
+    const { error, expenses } = await getExpensesFromSupabase()
 
-    if (response[0] === null) {
-      setExpenses(response[1])
+    if (error === null) {
+      setExpenses(expenses)
     }
   }
 
   const deleteExpense = async (id) => {
-    const response = await deleteExpenseFromSupabase(id)
+    const { error } = await deleteExpenseFromSupabase(id)
 
-    if (response[1] === null) getExpenses()
+    if (error === null) getExpenses()
   }
 
   const totalExpense = () => {

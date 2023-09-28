@@ -28,24 +28,25 @@ export default function Incomes({ session }) {
               <IncomeForm />
             </div>
             <div className="incomes">
-              {incomes.map((income) => {
-                const { id, title, amount, date, category, description } =
-                  income
+              {incomes.length > 0 &&
+                incomes.map((income) => {
+                  const { id, title, amount, date, category, description } =
+                    income
 
-                return (
-                  <Item
-                    key={id}
-                    id={id}
-                    title={title}
-                    amount={amount}
-                    date={date}
-                    category={category}
-                    description={description}
-                    indicatorColor="var(--color-green)"
-                    deleteItem={deleteIncome}
-                  />
-                )
-              })}
+                  return (
+                    <Item
+                      key={id}
+                      id={id}
+                      title={title}
+                      amount={amount}
+                      date={date}
+                      category={category}
+                      description={description}
+                      indicatorColor="var(--color-green)"
+                      deleteItem={deleteIncome}
+                    />
+                  )
+                })}
             </div>
           </div>
         </InnerLayout>

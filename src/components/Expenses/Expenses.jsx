@@ -29,25 +29,26 @@ export default function Expenses({ session }) {
               <ExpenseForm />
             </div>
             <div className="expenses">
-              {expenses.map((Expense) => {
-                const { id, title, amount, date, category, description } =
-                  Expense
+              {expenses.length > 0 &&
+                expenses.map((Expense) => {
+                  const { id, title, amount, date, category, description } =
+                    Expense
 
-                return (
-                  <Item
-                    key={id}
-                    id={id}
-                    title={title}
-                    amount={amount}
-                    date={date}
-                    category={category}
-                    description={description}
-                    indicatorColor="var(--color-delete)"
-                    deleteItem={deleteExpense}
-                    type="expense"
-                  />
-                )
-              })}
+                  return (
+                    <Item
+                      key={id}
+                      id={id}
+                      title={title}
+                      amount={amount}
+                      date={date}
+                      category={category}
+                      description={description}
+                      indicatorColor="var(--color-delete)"
+                      deleteItem={deleteExpense}
+                      type="expense"
+                    />
+                  )
+                })}
             </div>
           </div>
         </InnerLayout>

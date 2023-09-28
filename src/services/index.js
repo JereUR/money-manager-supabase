@@ -19,7 +19,7 @@ export const getIncomesFromSupabase = async () => {
     .eq('user_id', user.data.user.id)
     .order('date', { ascending: false })
 
-  return [error, incomes]
+  return { error, incomes }
 }
 
 export const addIncomeToSupabase = async (data) => {
@@ -28,14 +28,14 @@ export const addIncomeToSupabase = async (data) => {
     .insert(data)
     .select()
 
-  return [error, incomes]
+  return { error, incomes }
 }
 
 export const deleteIncomeFromSupabase = async (id) => {
   try {
     const { data, error } = await supabase.from('incomes').delete().eq('id', id)
 
-    return [data, error]
+    return { data, error }
   } catch (error) {
     console.error('Error al eliminar la fila:', error.message)
   }
@@ -55,7 +55,7 @@ export const getExpensesFromSupabase = async () => {
     .eq('user_id', user.data.user.id)
     .order('date', { ascending: false })
 
-  return [error, expenses]
+  return { error, expenses }
 }
 
 export const addExpenseToSupabase = async (data) => {
@@ -64,7 +64,7 @@ export const addExpenseToSupabase = async (data) => {
     .insert(data)
     .select()
 
-  return [error, expenses]
+  return { error, expenses }
 }
 
 export const deleteExpenseFromSupabase = async (id) => {
@@ -74,7 +74,7 @@ export const deleteExpenseFromSupabase = async (id) => {
       .delete()
       .eq('id', id)
 
-    return [data, error]
+    return { data, error }
   } catch (error) {
     console.error('Error al eliminar la fila:', error.message)
   }
@@ -89,7 +89,7 @@ export const updateUser = async (credentials, user) => {
     .eq('id', user.user.id)
     .select()
 
-  return [errorUpdate]
+  return { errorUpdate }
 }
 
 export const signUpWithEmail = async (credentials) => {
@@ -121,7 +121,7 @@ export const signInWithGoogle = async () => {
     provider: 'google'
   })
 
-  return [user, error]
+  return { user, error }
 }
 
 export const signInWithGithub = async () => {
@@ -129,7 +129,7 @@ export const signInWithGithub = async () => {
     provider: 'github'
   })
 
-  return [user, error]
+  return { user, error }
 }
 
 export const signOutFromSupabase = () => {

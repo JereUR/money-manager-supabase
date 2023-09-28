@@ -12,8 +12,6 @@ export default function Expenses({ session }) {
   const { expenses, getExpenses, deleteExpense, totalExpense } =
     useGlobalContext()
 
-  console.log({ expenses })
-
   useEffect(() => {
     if (session !== null) getExpenses()
   }, [session])
@@ -32,9 +30,10 @@ export default function Expenses({ session }) {
             </div>
             <div className="expenses">
               {expenses.length > 0 &&
-                expenses.map((Expense) => {
+                expenses.map((expense) => {
+                  console.log('test')
                   const { id, title, amount, date, category, description } =
-                    Expense
+                    expense
 
                   return (
                     <Item

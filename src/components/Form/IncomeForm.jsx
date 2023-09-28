@@ -9,7 +9,6 @@ import { plus } from '../../utils/Icons'
 
 export default function IncomeForm() {
   const { addIncome, getIncomes, error, setError, session } = useGlobalContext()
-  console.log({ session })
 
   const initialData = {
     title: '',

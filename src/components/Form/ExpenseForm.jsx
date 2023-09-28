@@ -19,7 +19,7 @@ export default function ExpenseForm() {
     category: '',
     description: '',
     type: 'expense',
-    user_id: session.user.id
+    user_id: session?.session?.user.id
   }
 
   const [inputState, setInputState] = useState(initialData)

@@ -18,7 +18,7 @@ export default function IncomeForm() {
     category: '',
     description: '',
     type: 'income',
-    user_id: session?.user.id
+    user_id: session?.session?.user.id
   }
 
   const [inputState, setInputState] = useState(initialData)

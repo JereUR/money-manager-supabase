@@ -12,6 +12,8 @@ export default function Expenses({ session }) {
   const { expenses, getExpenses, deleteExpense, totalExpense } =
     useGlobalContext()
 
+  console.log({ expenses })
+
   useEffect(() => {
     if (session !== null) getExpenses()
   }, [session])
